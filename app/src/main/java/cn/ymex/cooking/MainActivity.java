@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFra
         setSupportActionBar(toolbar);
 
         navigation.setOnNavigationItemSelectedListener(this);
-
+        //fragmentManagerWrap = FragmentManagerWrap.build(getSupportFragmentManager());
         DaggerUtilsComponent.builder().utilsMoudel(new UtilsMoudel(getSupportFragmentManager())).build().inject(this);
 
         if (getSupportFragmentManager().findFragmentById(R.id.contentFragment) == null) {
