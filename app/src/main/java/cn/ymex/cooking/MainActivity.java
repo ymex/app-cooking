@@ -1,37 +1,75 @@
 package cn.ymex.cooking;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.ymex.cooking.base.BaseActivity;
+import cn.ymex.cooking.home.HomeFragment;
+import cn.ymex.cooking.person.PersonFragment;
+import cn.ymex.cooking.sort.SortFragment;
+import cn.ymex.cooking.utils.DaggerUtilsComponent;
+import cn.ymex.cooking.utils.UtilsMoudel;
+import cn.ymex.cooking.utils.FragmentManagerWrap;
+
+public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFragmentListener,
+        SortFragment.OnSortFragmentListener, PersonFragment.OnPersonFragmentListener,
+        BottomNavigationView.OnNavigationItemSelectedListener {
+    @Inject
+    FragmentManagerWrap fragmentManagerWrap;
+    @BindView(R.id.navigation)
+    BottomNavigationView navigation;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        navigation.setOnNavigationItemSelectedListener(this);
+
+        DaggerUtilsComponent.builder().utilsMoudel(new UtilsMoudel(getSupportFragmentManager())).build().inject(this);
+
+        if (getSupportFragmentManager().findFragmentById(R.id.contentFragment) == null) {
+            fragmentManagerWrap.add(HomeFragment.newInstance(), SortFragment.newInstance(), PersonFragment.newInstance()).attach(R.id.contentFragment);
+        }
     }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                fragmentManagerWrap.showFragment(0);
+                return true;
+            case R.id.navigation_sort:
+                fragmentManagerWrap.showFragment(1);
+                return true;
+            case R.id.navigation_person:
+                fragmentManagerWrap.showFragment(2);
+                return true;
+        }
+        return false;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
