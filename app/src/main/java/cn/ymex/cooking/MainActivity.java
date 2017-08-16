@@ -1,6 +1,7 @@
 package cn.ymex.cooking;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
@@ -16,8 +17,9 @@ import cn.ymex.cooking.home.HomeFragment;
 import cn.ymex.cooking.person.PersonFragment;
 import cn.ymex.cooking.sort.SortFragment;
 import cn.ymex.cooking.utils.DaggerUtilsComponent;
-import cn.ymex.cooking.utils.UtilsMoudel;
 import cn.ymex.cooking.utils.FragmentManagerWrap;
+import cn.ymex.cooking.utils.UtilsMoudel;
+import cn.ymex.kits.log.L;
 
 public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFragmentListener,
         SortFragment.OnSortFragmentListener, PersonFragment.OnPersonFragmentListener,
@@ -36,18 +38,25 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFra
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+        DaggerUtilsComponent.builder().utilsMoudel(new UtilsMoudel(getSupportFragmentManager())).build().inject(this);
 
         setSupportActionBar(toolbar);
 
         navigation.setOnNavigationItemSelectedListener(this);
-        //fragmentManagerWrap = FragmentManagerWrap.build(getSupportFragmentManager());
-        DaggerUtilsComponent.builder().utilsMoudel(new UtilsMoudel(getSupportFragmentManager())).build().inject(this);
 
-        if (getSupportFragmentManager().findFragmentById(R.id.contentFragment) == null) {
-            fragmentManagerWrap.add(HomeFragment.newInstance(), SortFragment.newInstance(), PersonFragment.newInstance()).attach(R.id.contentFragment);
+
+        if (!fragmentManagerWrap.attached()) {
+            fragmentManagerWrap.add(HomeFragment.newInstance(),
+                    SortFragment.newInstance(),
+                    PersonFragment.newInstance())
+                    .attach(R.id.contentFragment);
+
+        } else {
+            fragmentManagerWrap.restore();
         }
-    }
 
+
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
