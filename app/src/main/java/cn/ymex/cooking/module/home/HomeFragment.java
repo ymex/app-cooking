@@ -1,4 +1,4 @@
-package cn.ymex.cooking.home;
+package cn.ymex.cooking.module.home;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ymex.cooking.R;
-import cn.ymex.cooking.base.BaseFragment;
+import cn.ymex.cooking.app.base.BaseFragment;
 
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {

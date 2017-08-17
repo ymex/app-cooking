@@ -1,7 +1,6 @@
 package cn.ymex.cooking;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
@@ -12,14 +11,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.ymex.cooking.base.BaseActivity;
-import cn.ymex.cooking.home.HomeFragment;
-import cn.ymex.cooking.person.PersonFragment;
-import cn.ymex.cooking.sort.SortFragment;
+import cn.ymex.cooking.app.base.BaseActivity;
+import cn.ymex.cooking.module.home.HomeFragment;
+import cn.ymex.cooking.module.person.PersonFragment;
+import cn.ymex.cooking.module.sort.SortFragment;
 import cn.ymex.cooking.utils.DaggerUtilsComponent;
 import cn.ymex.cooking.utils.FragmentManagerWrap;
 import cn.ymex.cooking.utils.UtilsMoudel;
-import cn.ymex.kits.log.L;
 
 public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFragmentListener,
         SortFragment.OnSortFragmentListener, PersonFragment.OnPersonFragmentListener,

@@ -1,4 +1,4 @@
-package cn.ymex.cooking.data;
+package cn.ymex.cooking.module.sort.data;
 
 /**
  * Created by ymex on 2017/8/16.

@@ -1,6 +1,6 @@
-package cn.ymex.cooking.sort;
+package cn.ymex.cooking.module.sort.data.souce;
 
-import cn.ymex.cooking.data.ResultCategory;
+import cn.ymex.cooking.module.sort.data.ResultCategory;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;

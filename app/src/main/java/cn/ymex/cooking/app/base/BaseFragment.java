@@ -1,4 +1,4 @@
-package cn.ymex.cooking.base;
+package cn.ymex.cooking.app.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

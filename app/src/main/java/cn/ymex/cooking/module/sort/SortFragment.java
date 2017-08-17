@@ -1,4 +1,4 @@
-package cn.ymex.cooking.sort;
+package cn.ymex.cooking.module.sort;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,17 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.ymex.cooking.R;
+import cn.ymex.cooking.app.AppContext;
+import cn.ymex.cooking.app.data.Result;
+import cn.ymex.cooking.app.http.Http;
 import cn.ymex.cooking.config.Constant;
-import cn.ymex.cooking.data.Category;
-import cn.ymex.cooking.data.ResultCategory;
-import cn.ymex.kits.Kits;
+import cn.ymex.cooking.module.sort.data.Category;
+import cn.ymex.cooking.module.sort.data.ResultCategory;
+import cn.ymex.cooking.module.sort.data.souce.SortService;
 import cn.ymex.kits.log.L;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -29,7 +31,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -47,15 +48,23 @@ public class SortFragment extends Fragment {
     public SortFragment() {
         // Required empty public constructor
     }
+
+
     AlertDialog alertDialog;
+
+    <T> T service(final Class<T> service) {
+        Retrofit retrofit = AppContext.getAppComponent().getRetrofit();
+        return retrofit.create(service);
+    }
+
+
+
+
+
     public void requestHttpRx() {
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.APIURL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+
+
+        Retrofit retrofit = AppContext.getAppComponent().getRetrofit();
 
         SortService sortService = retrofit.create(SortService.class);
 
@@ -87,6 +96,7 @@ public class SortFragment extends Fragment {
                     @Override
                     public void onNext(@NonNull Category category) {
                         L.d(category.getCategoryInfo().getName());
+                        Observable<Category> cao = Observable.just(category);
                     }
 
                     @Override

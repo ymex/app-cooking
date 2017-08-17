@@ -1,4 +1,4 @@
-package cn.ymex.cooking.data;
+package cn.ymex.cooking.module.sort.data;
 
 import java.util.List;
 

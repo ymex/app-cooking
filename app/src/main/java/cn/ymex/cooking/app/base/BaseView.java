@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.ymex.cooking.base;
+package cn.ymex.cooking.app.base;
 
 public interface BaseView<T> {
 

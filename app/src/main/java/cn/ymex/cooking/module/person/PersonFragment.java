@@ -1,4 +1,4 @@
-package cn.ymex.cooking.person;
+package cn.ymex.cooking.module.person;
 
 import android.content.Context;
 import android.os.Bundle;
