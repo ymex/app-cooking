@@ -1,6 +1,5 @@
 package cn.ymex.cooking.app.http;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 /**

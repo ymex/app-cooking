@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import cn.ymex.cooking.R;
 import cn.ymex.cooking.app.AppContext;
-import cn.ymex.cooking.app.data.Result;
-import cn.ymex.cooking.app.http.Http;
+import cn.ymex.cooking.app.http.T;
+import cn.ymex.cooking.app.http.ResultObserver;
 import cn.ymex.cooking.config.Constant;
 import cn.ymex.cooking.module.sort.data.Category;
 import cn.ymex.cooking.module.sort.data.ResultCategory;
@@ -58,7 +58,56 @@ public class SortFragment extends Fragment {
     }
 
 
+    public void requestFinal() {
+        AppContext.getAppComponent()
+                .getRetrofit()
+                .create(SortService.class)
+                .getRxCategory(Constant.APP_KEY)
+                .compose(new T<ResultCategory>().transformer())
+                .subscribe(new ResultObserver<ResultCategory>(){
+                    @Override
+                    public void onSuccess(@NonNull ResultCategory resultCategory) {
+                        super.onSuccess(resultCategory);
+                        L.d(resultCategory.getResult().getChilds().get(3).getCategoryInfo().getName());
+                    }
+                });
+    }
 
+
+    public void requestRx() {
+
+        Retrofit retrofit = AppContext.getAppComponent().getRetrofit();
+        SortService sortService = retrofit.create(SortService.class);
+        Observable<ResultCategory> categoryObservable = sortService.getRxCategory(Constant.APP_KEY);
+        categoryObservable.subscribeOn(Schedulers.io())
+                .map(new Function<ResultCategory, Category>() {
+                    @Override
+                    public Category apply(@NonNull ResultCategory resultCategory) throws Exception {
+                        return resultCategory.getResult();
+                    }
+                })
+                .doOnSubscribe(new Consumer<Disposable>() {//在接口请求前处理
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        alertDialog = new AlertDialog.Builder(getActivity()).setMessage("加载中").create();
+                        alertDialog.show();
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ResultObserver<Category>(){
+                    @Override
+                    public void onSuccess(@NonNull Category category) {
+                        super.onSuccess(category);
+                        L.d("---",category.getChilds().get(2).getCategoryInfo().getName());
+                    }
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        alertDialog.dismiss();
+                    }
+                });
+    }
 
 
     public void requestHttpRx() {
@@ -96,12 +145,12 @@ public class SortFragment extends Fragment {
                     @Override
                     public void onNext(@NonNull Category category) {
                         L.d(category.getCategoryInfo().getName());
-                        Observable<Category> cao = Observable.just(category);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         L.d(e.getLocalizedMessage());
+
                         if (alertDialog.isShowing()) {
                             alertDialog.dismiss();
                         }
@@ -164,7 +213,7 @@ public class SortFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requestHttpRx();
+        requestFinal();
     }
 
     @Override
