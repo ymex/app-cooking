@@ -71,6 +71,7 @@ public class SortFragment extends Fragment {
                         L.d(resultCategory.getResult().getChilds().get(3).getCategoryInfo().getName());
                     }
                 });
+        // TODO: 2017/8/18 网络请求进度框如何 显示的最佳实践。
     }
 
 
