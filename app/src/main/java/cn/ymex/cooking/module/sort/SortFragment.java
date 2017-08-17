@@ -72,6 +72,7 @@ public class SortFragment extends Fragment {
                     }
                 });
         // TODO: 2017/8/18 网络请求进度框如何 显示的最佳实践。
+        // TODO: 2017/8/18 重新定义的dialog 必须实现对预定义的接口,用于控制对话框
     }
 
 
