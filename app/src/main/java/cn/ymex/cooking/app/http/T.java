@@ -1,5 +1,8 @@
 package cn.ymex.cooking.app.http;
 
+import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
@@ -10,26 +13,43 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class T<T> {
+    public static AtomicInteger GK = new AtomicInteger(0);
+    private WeakReference<Noticeable> noticeable;
 
-    public ObservableTransformer<T, T> transformer() {
-        return transformer(null);
+    public T() {
+        this(null);
     }
 
-    public ObservableTransformer<T, T> transformer(final Consumer<Disposable> onStartCallBack) {
+    public T(Noticeable noticeable) {
+        this.noticeable = new WeakReference<Noticeable>(noticeable);
+    }
+
+    /**
+     * 尽可能的在链端插入
+     *
+     * @return
+     */
+    public ObservableTransformer<T, T> transformer() {
         return new ObservableTransformer<T, T>() {
-            Consumer<Disposable> start = onStartCallBack;
+
 
             @Override
             public ObservableSource apply(@NonNull Observable upstream) {
-                if (start == null) {
-                    start = new Consumer<Disposable>() {
-                        @Override
-                        public void accept(Disposable disposable) throws Exception {
-                        }
-                    };
-                }
+
                 return upstream.subscribeOn(Schedulers.io())
-                        .doOnSubscribe(start)
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(Disposable disposable) throws Exception {
+
+                                if (noticeable.get() != null && !noticeable.get().isShow() && noticeable.get().isVisibleToUser()) {
+                                    noticeable.get().showNotice();
+                                }
+                                if (noticeable.get() != null) {
+                                    noticeable.get().setDisposable(GK.addAndGet(1),disposable);
+                                }
+
+                            }
+                        })
                         .subscribeOn(AndroidSchedulers.mainThread())
                         .observeOn(AndroidSchedulers.mainThread());
             }

@@ -9,14 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.concurrent.TimeUnit;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ymex.cooking.R;
 import cn.ymex.cooking.app.AppContext;
+import cn.ymex.cooking.app.base.BaseFragment;
 import cn.ymex.cooking.app.http.T;
 import cn.ymex.cooking.app.http.ResultObserver;
 import cn.ymex.cooking.config.Constant;
 import cn.ymex.cooking.module.sort.data.Category;
 import cn.ymex.cooking.module.sort.data.ResultCategory;
 import cn.ymex.cooking.module.sort.data.souce.SortService;
+import cn.ymex.kits.Kits;
 import cn.ymex.kits.log.L;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -41,20 +47,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Use the {@link SortFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SortFragment extends Fragment {
+public class SortFragment extends BaseFragment {
 
     private OnSortFragmentListener mListener;
 
     public SortFragment() {
-        // Required empty public constructor
-    }
-
-
-    AlertDialog alertDialog;
-
-    <T> T service(final Class<T> service) {
-        Retrofit retrofit = AppContext.getAppComponent().getRetrofit();
-        return retrofit.create(service);
     }
 
 
@@ -63,133 +60,19 @@ public class SortFragment extends Fragment {
                 .getRetrofit()
                 .create(SortService.class)
                 .getRxCategory(Constant.APP_KEY)
-                .compose(new T<ResultCategory>().transformer())
-                .subscribe(new ResultObserver<ResultCategory>(){
-                    @Override
-                    public void onSuccess(@NonNull ResultCategory resultCategory) {
-                        super.onSuccess(resultCategory);
-                        L.d(resultCategory.getResult().getChilds().get(3).getCategoryInfo().getName());
-                    }
-                });
-        // TODO: 2017/8/18 网络请求进度框如何 显示的最佳实践。
-        // TODO: 2017/8/18 重新定义的dialog 必须实现对预定义的接口,用于控制对话框
-    }
-
-
-    public void requestRx() {
-
-        Retrofit retrofit = AppContext.getAppComponent().getRetrofit();
-        SortService sortService = retrofit.create(SortService.class);
-        Observable<ResultCategory> categoryObservable = sortService.getRxCategory(Constant.APP_KEY);
-        categoryObservable.subscribeOn(Schedulers.io())
-                .map(new Function<ResultCategory, Category>() {
-                    @Override
-                    public Category apply(@NonNull ResultCategory resultCategory) throws Exception {
-                        return resultCategory.getResult();
-                    }
-                })
-                .doOnSubscribe(new Consumer<Disposable>() {//在接口请求前处理
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        alertDialog = new AlertDialog.Builder(getActivity()).setMessage("加载中").create();
-                        alertDialog.show();
-                    }
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .compose(new T<ResultCategory>(this).transformer())
+                .delay(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ResultObserver<Category>(){
+                .subscribe(new ResultObserver<ResultCategory>(this) {
                     @Override
-                    public void onSuccess(@NonNull Category category) {
-                        super.onSuccess(category);
-                        L.d("---",category.getChilds().get(2).getCategoryInfo().getName());
-                    }
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        alertDialog.dismiss();
+                    public void onResult(@NonNull ResultCategory resultCategory) {
+                        super.onResult(resultCategory);
+                        L.d(resultCategory.getResult().getChilds().get(4).getCategoryInfo().getName());
                     }
                 });
     }
 
-
-    public void requestHttpRx() {
-
-
-        Retrofit retrofit = AppContext.getAppComponent().getRetrofit();
-
-        SortService sortService = retrofit.create(SortService.class);
-
-        Observable<ResultCategory> categoryObservable = sortService.getRxCategory(Constant.APP_KEY);
-
-        categoryObservable.subscribeOn(Schedulers.io())
-                .map(new Function<ResultCategory, Category>() {
-                    @Override
-                    public Category apply(@NonNull ResultCategory resultCategory) throws Exception {
-                        return resultCategory.getResult();
-                    }
-                })
-                .doOnSubscribe(new Consumer<Disposable>() {//在接口请求前处理
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        alertDialog = new AlertDialog.Builder(getActivity()).setMessage("加载中").create();
-                        alertDialog.show();
-                    }
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Category>() {
-
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull Category category) {
-                        L.d(category.getCategoryInfo().getName());
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        L.d(e.getLocalizedMessage());
-
-                        if (alertDialog.isShowing()) {
-                            alertDialog.dismiss();
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        alertDialog.dismiss();
-                    }
-                });
-
-    }
-
-
-    public void requestHttp() {
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.APIURL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        SortService sortService = retrofit.create(SortService.class);
-        Call<ResultCategory> categoryCall = sortService.getCategory(Constant.APP_KEY);
-        categoryCall.enqueue(new Callback<ResultCategory>() {
-            @Override
-            public void onResponse(Call<ResultCategory> call, Response<ResultCategory> response) {
-                ResultCategory resultCategory = response.body();
-                L.d(resultCategory.getMsg());
-            }
-
-            @Override
-            public void onFailure(Call<ResultCategory> call, Throwable t) {
-
-            }
-        });
-    }
 
     public static SortFragment newInstance() {
         SortFragment fragment = new SortFragment();
@@ -215,7 +98,19 @@ public class SortFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+
+    }
+
+
+    @OnClick(R.id.btn_send)
+    public void send(View view) {
         requestFinal();
+    }
+
+    @OnClick(R.id.btn_cancel)
+    public void cancel(View view) {
+        cancelDisposables();
     }
 
     @Override
@@ -239,4 +134,5 @@ public class SortFragment extends Fragment {
     public interface OnSortFragmentListener {
 
     }
+
 }

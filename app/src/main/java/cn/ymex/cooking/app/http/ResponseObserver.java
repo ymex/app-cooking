@@ -14,12 +14,12 @@ public abstract class ResponseObserver<T> implements Observer<T> {
 
     @Override
     public void onNext(@NonNull T t) {
-        this.onSuccess(t);
+        this.onResult(t);
     }
 
     @Override
     public void onError(@NonNull Throwable e) {
-        this.onMistake(e);
+        this.onFailure(e);
         this.onFinish();
     }
 
@@ -28,9 +28,13 @@ public abstract class ResponseObserver<T> implements Observer<T> {
         this.onFinish();
     }
 
-    abstract void onSuccess(@NonNull T t);
+    abstract void onResult(@NonNull T t);
 
-    abstract void onMistake(@NonNull Throwable e);
+    abstract void onFailure(@NonNull Throwable e);
 
+    /**
+     * 不管成功还是失败都会最后一步都会调用onfinish
+     */
     abstract void onFinish();
+    
 }
