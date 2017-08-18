@@ -3,11 +3,11 @@ package cn.ymex.cooking.app.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.ymex.cooking.app.http.NoticeViewable;
 import cn.ymex.cooking.app.http.Noticeable;
 import io.reactivex.disposables.Disposable;
 
@@ -18,34 +18,37 @@ import io.reactivex.disposables.Disposable;
 public class BaseFragment extends Fragment implements Noticeable {
 
     //加载框
-    protected AlertDialog mProgressView;
+    protected NoticeViewable noticeView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProgressView = new AlertDialog.Builder(getActivity()).setMessage("加载中").create();
+    }
+
+    public void setNoticeView(NoticeViewable noticeView) {
+        this.noticeView = noticeView;
     }
 
     @Override
     public boolean isShow() {
-        if (mProgressView == null) {
+        if (noticeView == null) {
             return false;
         }
-        return mProgressView.isShowing();
+        return noticeView.isShow();
     }
 
 
     @Override
     public void showNotice() {
-        if (mProgressView != null) {
-            mProgressView.show();
+        if (noticeView != null) {
+            noticeView.showNotice();
         }
     }
 
     @Override
     public void dismissNotice() {
-        if (mProgressView != null) {
-            mProgressView.dismiss();
+        if (noticeView != null) {
+            noticeView.dismissNotice();
         }
     }
 
@@ -58,8 +61,8 @@ public class BaseFragment extends Fragment implements Noticeable {
 
     public void onHiddenChanged(boolean hidden) {
         this.mIsVisibleToUser = !hidden;
-        if (hidden && mProgressView != null && mProgressView.isShowing()) {
-            mProgressView.dismiss();
+        if (hidden && noticeView != null && noticeView.isShow()) {
+            noticeView.dismissNotice();
         }
     }
 
