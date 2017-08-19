@@ -48,7 +48,9 @@ public class SortFragment extends BaseFragment {
     private OnSortFragmentListener mListener;
 
     //@BindView(R.id.swipe_content)
-    private SmartRefreshLayout smartRefreshLayout;
+   // private SmartRefreshLayout smartRefreshLayout;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public SortFragment() {
     }
@@ -98,15 +100,17 @@ public class SortFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        smartRefreshLayout = (SmartRefreshLayout) view;
-        //设置 Header 为 Material风格
-        smartRefreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(false));
-        //设置 Footer 为 球脉冲
-        smartRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
-        smartRefreshLayout.setEnableLoadmore(true);
-        smartRefreshLayout.setEnableFooterTranslationContent(false);
-        smartRefreshLayout.setEnableLoadmoreWhenContentNotFull(true);
-        setNoticeView(new SmartPtrNoticeViewWarp(smartRefreshLayout));
+        swipeRefreshLayout = (SwipeRefreshLayout) view;
+//        smartRefreshLayout = (SmartRefreshLayout) view;
+//        //设置 Header 为 Material风格
+//        smartRefreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(false));
+//        //设置 Footer 为 球脉冲
+//        smartRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
+//        smartRefreshLayout.setEnableLoadmore(true);
+//        smartRefreshLayout.setEnableFooterTranslationContent(false);
+//        smartRefreshLayout.setEnableLoadmoreWhenContentNotFull(true);
+//        setNoticeView(new SmartPtrNoticeViewWarp(smartRefreshLayout));
+        setNoticeView(new SRLNoticeViewWarp(swipeRefreshLayout));
 
     }
 
