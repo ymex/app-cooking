@@ -17,8 +17,11 @@ import io.reactivex.disposables.Disposable;
 
 public class BaseFragment extends Fragment implements Noticeable {
 
-    //加载框
+
     protected NoticeViewable noticeView;
+    protected boolean mIsVisibleToUser;
+    protected HashMap<Integer, Disposable> mDisposableMap;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class BaseFragment extends Fragment implements Noticeable {
 
     @Override
     public void showNotice() {
-        if (noticeView != null) {
+        if (noticeView != null&&!noticeView.isShow()) {
             noticeView.showNotice();
         }
     }
@@ -56,8 +59,6 @@ public class BaseFragment extends Fragment implements Noticeable {
     /**
      * fragment 是否对用户可见
      */
-    protected boolean mIsVisibleToUser;
-    protected HashMap<Integer, Disposable> mDisposableMap;
 
     public void onHiddenChanged(boolean hidden) {
         this.mIsVisibleToUser = !hidden;
@@ -92,7 +93,13 @@ public class BaseFragment extends Fragment implements Noticeable {
                 disposable.dispose();
             }
         }
+        getDisposableMap().clear();
         dismissNotice();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cancelDisposables();
+    }
 }

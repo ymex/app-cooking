@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +15,13 @@ import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ymex.cooking.R;
 import cn.ymex.cooking.app.AppContext;
 import cn.ymex.cooking.app.base.BaseFragment;
-import cn.ymex.cooking.app.http.NoticeViewable;
-import cn.ymex.cooking.app.http.SRLNoticeViewWarp;
-import cn.ymex.cooking.app.http.SmartPtrNoticeViewWarp;
+import cn.ymex.cooking.app.http.Noticeable;
+import cn.ymex.cooking.app.widget.SwipeRefreshNoticeView;
 import cn.ymex.cooking.app.http.T;
 import cn.ymex.cooking.app.http.ResultObserver;
 import cn.ymex.cooking.config.Constant;
@@ -43,17 +40,15 @@ import io.reactivex.schedulers.Schedulers;
  * Use the {@link SortFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SortFragment extends BaseFragment {
+public class SortFragment extends BaseFragment implements SortContract.View{
 
     private OnSortFragmentListener mListener;
+    private SmartRefreshLayout smartRefreshLayout;
 
-    //@BindView(R.id.swipe_content)
-   // private SmartRefreshLayout smartRefreshLayout;
-
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     public SortFragment() {
     }
+
 
 
     public void requestFinal() {
@@ -61,10 +56,12 @@ public class SortFragment extends BaseFragment {
                 .getRetrofit()
                 .create(SortService.class)
                 .getRxCategory(Constant.APP_KEY)
+
                 .compose(new T<ResultCategory>(this).transformer())
+
                 .delay(15, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+
                 .subscribe(new ResultObserver<ResultCategory>(this) {
                     @Override
                     public void onResult(@NonNull ResultCategory resultCategory) {
@@ -100,17 +97,13 @@ public class SortFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        swipeRefreshLayout = (SwipeRefreshLayout) view;
-//        smartRefreshLayout = (SmartRefreshLayout) view;
-//        //设置 Header 为 Material风格
-//        smartRefreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(false));
-//        //设置 Footer 为 球脉冲
-//        smartRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
-//        smartRefreshLayout.setEnableLoadmore(true);
-//        smartRefreshLayout.setEnableFooterTranslationContent(false);
-//        smartRefreshLayout.setEnableLoadmoreWhenContentNotFull(true);
-//        setNoticeView(new SmartPtrNoticeViewWarp(smartRefreshLayout));
-        setNoticeView(new SRLNoticeViewWarp(swipeRefreshLayout));
+        smartRefreshLayout = (SmartRefreshLayout) view;
+        smartRefreshLayout = (SmartRefreshLayout) view;
+        //设置 Header 为 Material风格
+        smartRefreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(false));
+        smartRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
+        smartRefreshLayout.setEnableHeaderTranslationContent(false);
+        setNoticeView(new SwipeRefreshNoticeView(smartRefreshLayout));
 
     }
 
@@ -140,6 +133,11 @@ public class SortFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void setPresenter(SortContract.Presenter presenter) {
+
     }
 
 

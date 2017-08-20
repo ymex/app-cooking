@@ -4,6 +4,7 @@ package cn.ymex.cooking.app.http;
 import io.reactivex.disposables.Disposable;
 
 public interface Noticeable {
+
     /**
      * 提示的当前 状态
      * @return

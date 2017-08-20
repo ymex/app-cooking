@@ -36,18 +36,17 @@ public class T<T> {
             @Override
             public ObservableSource apply(@NonNull Observable upstream) {
 
-                return upstream.subscribeOn(Schedulers.io())
+                return upstream
+                        .subscribeOn(Schedulers.io())
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
-
                                 if (noticeable.get() != null && !noticeable.get().isShow() && noticeable.get().isVisibleToUser()) {
                                     noticeable.get().showNotice();
                                 }
                                 if (noticeable.get() != null) {
-                                    noticeable.get().setDisposable(GK.addAndGet(1),disposable);
+                                    noticeable.get().setDisposable(GK.addAndGet(1), disposable);
                                 }
-
                             }
                         })
                         .subscribeOn(AndroidSchedulers.mainThread())

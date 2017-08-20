@@ -1,15 +1,17 @@
-package cn.ymex.cooking.app.http;
+package cn.ymex.cooking.app.widget;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+
+import cn.ymex.cooking.app.http.NoticeViewable;
 
 /**
  * Created by ymex on 2017/8/19.
  */
 
-public class SmartPtrNoticeViewWarp implements NoticeViewable {
+public class SwipeRefreshNoticeView implements NoticeViewable {
     private SmartRefreshLayout smartRefreshLayout;
 
-    public SmartPtrNoticeViewWarp(SmartRefreshLayout layout) {
+    public SwipeRefreshNoticeView(SmartRefreshLayout layout) {
         this.smartRefreshLayout = layout;
     }
 

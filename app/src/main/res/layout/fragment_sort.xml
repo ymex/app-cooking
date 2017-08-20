@@ -1,5 +1,5 @@
 
-<android.support.v4.widget.SwipeRefreshLayout
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_content"
@@ -36,4 +36,4 @@
 
     </LinearLayout>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
