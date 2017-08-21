@@ -4,31 +4,25 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.ui.depot.wedgit.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.scwang.smartrefresh.header.MaterialHeader;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ymex.cooking.R;
-import cn.ymex.cooking.app.AppContext;
+import cn.ymex.cooking.AppContext;
 import cn.ymex.cooking.app.base.BaseFragment;
-import cn.ymex.cooking.app.http.Noticeable;
-import cn.ymex.cooking.app.widget.SwipeRefreshNoticeView;
-import cn.ymex.cooking.app.http.T;
 import cn.ymex.cooking.app.http.ResultObserver;
+import cn.ymex.cooking.app.http.T;
+import cn.ymex.cooking.app.widget.SwipeRefreshNoticeView;
 import cn.ymex.cooking.config.Constant;
 import cn.ymex.cooking.module.sort.data.ResultCategory;
 import cn.ymex.cooking.module.sort.data.souce.SortService;
 import cn.ymex.kits.log.L;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
@@ -43,7 +37,8 @@ import io.reactivex.schedulers.Schedulers;
 public class SortFragment extends BaseFragment implements SortContract.View{
 
     private OnSortFragmentListener mListener;
-    private SmartRefreshLayout smartRefreshLayout;
+    private SortContract.Presenter presenter;
+    private SwipeRefreshLayout refreshLayout;
 
 
     public SortFragment() {
@@ -97,13 +92,10 @@ public class SortFragment extends BaseFragment implements SortContract.View{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        smartRefreshLayout = (SmartRefreshLayout) view;
-        smartRefreshLayout = (SmartRefreshLayout) view;
-        //设置 Header 为 Material风格
-        smartRefreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(false));
-        smartRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
-        smartRefreshLayout.setEnableHeaderTranslationContent(false);
-        setNoticeView(new SwipeRefreshNoticeView(smartRefreshLayout));
+
+        refreshLayout = (SwipeRefreshLayout) view;
+
+        setNoticeView(new SwipeRefreshNoticeView(refreshLayout));
 
     }
 
@@ -135,11 +127,28 @@ public class SortFragment extends BaseFragment implements SortContract.View{
         mListener = null;
     }
 
+
+
+    //<editor-fold desc="SortContract.View 接口方法">
     @Override
     public void setPresenter(SortContract.Presenter presenter) {
-
+        this.presenter = presenter;
     }
 
+
+    @Override
+    public SwipeRefreshLayout getRefreshLayout() {
+        return (SwipeRefreshLayout) getView();
+    }
+
+    //</editor-fold>
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.presenter.start();
+    }
 
     public interface OnSortFragmentListener {
 

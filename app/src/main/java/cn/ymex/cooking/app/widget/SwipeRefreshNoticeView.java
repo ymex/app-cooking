@@ -1,6 +1,6 @@
 package cn.ymex.cooking.app.widget;
 
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import android.ui.depot.wedgit.SwipeRefreshLayout;
 
 import cn.ymex.cooking.app.http.NoticeViewable;
 
@@ -9,9 +9,9 @@ import cn.ymex.cooking.app.http.NoticeViewable;
  */
 
 public class SwipeRefreshNoticeView implements NoticeViewable {
-    private SmartRefreshLayout smartRefreshLayout;
+    private SwipeRefreshLayout smartRefreshLayout;
 
-    public SwipeRefreshNoticeView(SmartRefreshLayout layout) {
+    public SwipeRefreshNoticeView(SwipeRefreshLayout layout) {
         this.smartRefreshLayout = layout;
     }
 

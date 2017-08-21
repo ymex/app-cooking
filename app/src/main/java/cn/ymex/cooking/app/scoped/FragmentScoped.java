@@ -1,4 +1,4 @@
-package cn.ymex.cooking.app.base;
+package cn.ymex.cooking.app.scoped;
 
 
 import java.lang.annotation.Documented;

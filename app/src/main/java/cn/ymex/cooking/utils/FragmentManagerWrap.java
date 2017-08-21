@@ -1,6 +1,7 @@
 package cn.ymex.cooking.utils;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.RestrictTo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -105,11 +106,19 @@ public class FragmentManagerWrap {
         for (Fragment fg : getFragments()) {
             transaction.add(containerViewId, fg).hide(fg);
         }
-        transaction.show(getFirst()).commit();
+        transaction.show(getFragment(0)).commit();
     }
 
-    public Fragment getFirst() {
-        return getFragments().size() > 0 ? getFragments().get(0) : null;
+    public Fragment getFragment(int index) {
+        if (getFragmentsSize() < 0) {
+            return null;
+        }
+        if (index>=getFragments().size()) {
+            return getFragments().get(getFragmentsSize() - 1);
+        }
+
+
+        return getFragments().get(index<=0?0:index);
     }
 
     private List<Fragment> getFragments() {

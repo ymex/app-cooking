@@ -1,5 +1,8 @@
-package cn.ymex.cooking.app;
+package cn.ymex.cooking;
 
+import cn.ymex.cooking.app.AppComponent;
+import cn.ymex.cooking.app.AppModule;
+import cn.ymex.cooking.app.DaggerAppComponent;
 import cn.ymex.kits.AppContent;
 
 /**

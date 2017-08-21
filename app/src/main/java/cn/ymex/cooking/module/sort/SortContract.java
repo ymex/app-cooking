@@ -1,5 +1,7 @@
 package cn.ymex.cooking.module.sort;
 
+import android.ui.depot.wedgit.SwipeRefreshLayout;
+
 import cn.ymex.cooking.app.base.BasePresenter;
 import cn.ymex.cooking.app.base.BaseView;
 
@@ -8,11 +10,11 @@ import cn.ymex.cooking.app.base.BaseView;
  */
 
 public class SortContract {
-    interface Presenter extends BasePresenter{
+    public interface Presenter extends BasePresenter{
 
     }
 
-    interface View extends BaseView<Presenter> {
-
+    public interface View extends BaseView<Presenter> {
+        SwipeRefreshLayout getRefreshLayout();
     }
 }

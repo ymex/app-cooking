@@ -14,21 +14,28 @@ import butterknife.ButterKnife;
 import cn.ymex.cooking.app.base.BaseActivity;
 import cn.ymex.cooking.module.home.HomeFragment;
 import cn.ymex.cooking.module.person.PersonFragment;
+import cn.ymex.cooking.module.sort.DaggerSortPresenterComponent;
 import cn.ymex.cooking.module.sort.SortFragment;
-import cn.ymex.cooking.utils.DaggerUtilsComponent;
+import cn.ymex.cooking.module.sort.SortPresenter;
+import cn.ymex.cooking.module.sort.SortPresenterModule;
 import cn.ymex.cooking.utils.FragmentManagerWrap;
-import cn.ymex.cooking.utils.UtilsMoudel;
+import cn.ymex.cooking.utils.UtilsComponent;
 
 public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFragmentListener,
         SortFragment.OnSortFragmentListener, PersonFragment.OnPersonFragmentListener,
         BottomNavigationView.OnNavigationItemSelectedListener {
-    @Inject
+    //@Inject
     FragmentManagerWrap fragmentManagerWrap;
+
+    @Inject
+    SortPresenter sortPresenter;
+
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    UtilsComponent utilsComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +43,15 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFra
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-        DaggerUtilsComponent.builder().utilsMoudel(new UtilsMoudel(getSupportFragmentManager())).build().inject(this);
-
         setSupportActionBar(toolbar);
+
+        fragmentManagerWrap = FragmentManagerWrap.build(getSupportFragmentManager());
+//        utilsComponent = DaggerUtilsComponent.builder()
+//                .utilsMoudel(new UtilsMoudel(getSupportFragmentManager()))
+//                .build();
+//        utilsComponent.inject(this);
+
+
 
         navigation.setOnNavigationItemSelectedListener(this);
 
@@ -53,6 +66,9 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFra
             fragmentManagerWrap.restore();
         }
 
+        DaggerSortPresenterComponent.builder()
+                .sortPresenterModule(new SortPresenterModule((SortFragment) fragmentManagerWrap.getFragment(1)))
+                .build().inject(this);
 
     }
 

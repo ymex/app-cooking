@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
+import cn.ymex.cooking.AppContext;
 import cn.ymex.cooking.config.Constant;
 import dagger.Module;
 import dagger.Provides;

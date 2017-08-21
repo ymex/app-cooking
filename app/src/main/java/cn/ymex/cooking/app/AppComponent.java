@@ -2,6 +2,7 @@ package cn.ymex.cooking.app;
 
 import javax.inject.Singleton;
 
+import cn.ymex.cooking.AppContext;
 import dagger.Component;
 import retrofit2.Retrofit;
 
