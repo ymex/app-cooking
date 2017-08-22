@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.ui.depot.wedgit.SwipeRefreshLayout;
+import android.ui.depot.wedgit.swiperefreshlayout.api.RefreshLayout;
+import android.ui.depot.wedgit.swiperefreshlayout.listener.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ymex.cooking.R;
@@ -41,29 +45,10 @@ public class SortFragment extends BaseFragment implements SortContract.View{
     private SwipeRefreshLayout refreshLayout;
 
 
+    @BindView(R.id.tv_content)
+    TextView tvContent;
+
     public SortFragment() {
-    }
-
-
-
-    public void requestFinal() {
-        AppContext.getAppComponent()
-                .getRetrofit()
-                .create(SortService.class)
-                .getRxCategory(Constant.APP_KEY)
-
-                .compose(new T<ResultCategory>(this).transformer())
-
-                .delay(15, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-
-                .subscribe(new ResultObserver<ResultCategory>(this) {
-                    @Override
-                    public void onResult(@NonNull ResultCategory resultCategory) {
-                        super.onResult(resultCategory);
-                        L.d(resultCategory.getResult().getChilds().get(4).getCategoryInfo().getName());
-                    }
-                });
     }
 
 
@@ -97,18 +82,22 @@ public class SortFragment extends BaseFragment implements SortContract.View{
 
         setNoticeView(new SwipeRefreshNoticeView(refreshLayout));
 
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+
+            }
+        });
+
     }
 
 
     @OnClick(R.id.btn_send)
     public void send(View view) {
-        requestFinal();
+       // refreshLayout.autoRefresh();
+        presenter.requestCookingMenu();
     }
 
-    @OnClick(R.id.btn_cancel)
-    public void cancel(View view) {
-        cancelDisposables();
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -139,6 +128,11 @@ public class SortFragment extends BaseFragment implements SortContract.View{
     @Override
     public SwipeRefreshLayout getRefreshLayout() {
         return (SwipeRefreshLayout) getView();
+    }
+
+    @Override
+    public void setTextContent(String content) {
+        tvContent.setText(content);
     }
 
     //</editor-fold>

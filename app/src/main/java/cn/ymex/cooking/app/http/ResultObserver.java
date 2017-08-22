@@ -20,7 +20,6 @@ public class ResultObserver<T> extends ResponseObserver<T> {
 
     @Override
     public void onResult(@NonNull T t) {
-
     }
 
     @Override
@@ -29,7 +28,7 @@ public class ResultObserver<T> extends ResponseObserver<T> {
 
     @Override
     public void onFinish() {
-        if (noticeable.get() != null && noticeable.get().isShow()) {
+        if (noticeable.get() != null) {
             noticeable.get().dismissNotice();
         }
     }

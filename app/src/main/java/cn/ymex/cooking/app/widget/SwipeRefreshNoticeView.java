@@ -5,28 +5,32 @@ import android.ui.depot.wedgit.SwipeRefreshLayout;
 import cn.ymex.cooking.app.http.NoticeViewable;
 
 /**
- * Created by ymex on 2017/8/19.
+ * SwipeRefreshLayout作为加载提醒控件
  */
 
 public class SwipeRefreshNoticeView implements NoticeViewable {
-    private SwipeRefreshLayout smartRefreshLayout;
+    private SwipeRefreshLayout refreshLayout;
 
     public SwipeRefreshNoticeView(SwipeRefreshLayout layout) {
-        this.smartRefreshLayout = layout;
+        this.refreshLayout = layout;
     }
 
     @Override
     public boolean isShow() {
-        return smartRefreshLayout.isRefreshing();
+        return refreshLayout.isRefreshing();
+
     }
+
 
     @Override
     public void showNotice() {
-        smartRefreshLayout.autoRefresh();
+        refreshLayout.autoRefresh(0);
+        // TODO: 2017/8/22  
+        //refreshLayout.setRefresh(true);
     }
 
     @Override
     public void dismissNotice() {
-        smartRefreshLayout.finishRefresh();
+        refreshLayout.finishRefresh(800);
     }
 }

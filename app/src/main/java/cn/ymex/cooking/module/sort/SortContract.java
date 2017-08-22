@@ -11,10 +11,12 @@ import cn.ymex.cooking.app.base.BaseView;
 
 public class SortContract {
     public interface Presenter extends BasePresenter{
-
+        void requestCookingMenu();
     }
 
     public interface View extends BaseView<Presenter> {
         SwipeRefreshLayout getRefreshLayout();
+
+        void setTextContent(String content);
     }
 }

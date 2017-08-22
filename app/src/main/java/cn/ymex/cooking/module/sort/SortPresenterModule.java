@@ -1,6 +1,7 @@
 package cn.ymex.cooking.module.sort;
 
 import cn.ymex.cooking.app.widget.SwipeRefreshNoticeView;
+import cn.ymex.cooking.module.sort.data.souce.SortRepository;
 import dagger.Module;
 import dagger.Provides;
 
@@ -21,6 +22,11 @@ public class SortPresenterModule {
     @Provides
     SortContract.View provideSortContractView() {
         return this.mView;
+    }
+
+    @Provides
+    SortRepository provideSortRepository() {
+        return new SortRepository();
     }
 
     @Provides

@@ -16,8 +16,8 @@
 
 package cn.ymex.cooking.app.base;
 
-public interface BaseView<T> {
+import cn.ymex.cooking.app.http.Noticeable;
 
+public interface BaseView<T> extends Noticeable{
     void setPresenter(T presenter);
-
 }
