@@ -28,6 +28,5 @@ public class SortRepository {
                 .compose(new T<ResultCategory>(noticeable).transformer())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
-
     }
 }
