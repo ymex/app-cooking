@@ -40,7 +40,7 @@ dependencies {
     compile 'cn.ymex.kits:kits:1.0.0'
     compile 'com.google.code.gson:gson:2.8.1'
     testCompile 'junit:junit:4.12'
-    compile 'android.depot:support-android-ui:1.0.0'
+    compile 'android.depot:support-android-ui:1.0.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'

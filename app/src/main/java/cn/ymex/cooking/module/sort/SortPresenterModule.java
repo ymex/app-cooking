@@ -1,6 +1,5 @@
 package cn.ymex.cooking.module.sort;
 
-import cn.ymex.cooking.app.widget.SwipeRefreshNoticeView;
 import cn.ymex.cooking.module.sort.data.souce.SortRepository;
 import dagger.Module;
 import dagger.Provides;
@@ -29,9 +28,9 @@ public class SortPresenterModule {
         return new SortRepository();
     }
 
-    @Provides
-    SwipeRefreshNoticeView provideSwipeRefreshNoticeView() {
-        return new SwipeRefreshNoticeView(mView.getRefreshLayout());
-    }
+//    @Provides
+//    SwipeRefreshNoticeView provideSwipeRefreshNoticeView() {
+//        return new SwipeRefreshNoticeView(mView.getRefreshLayout());
+//    }
 
 }

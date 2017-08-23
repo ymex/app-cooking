@@ -11,11 +11,6 @@ public interface Noticeable {
      */
     boolean isShow();
 
-    /**
-     * 当前面用户是否可见,如fragment 对用户不可见,当其更新数据时不能出现对话框
-     * @return
-     */
-    boolean isVisibleToUser();
 
     /**
      * 显示提示
@@ -26,6 +21,13 @@ public interface Noticeable {
      * 用于隐藏提示
      */
     void dismissNotice();
+
+    /**
+     * 当前面用户是否可见,如fragment 对用户不可见,当其更新数据时不能出现对话框
+     * @return
+     */
+    boolean isVisibleToUser();
+
 
     /**
      * 用于取消订阅

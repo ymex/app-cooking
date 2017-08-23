@@ -9,6 +9,7 @@ import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -25,13 +26,12 @@ public class T<T> {
     }
 
     /**
-     * 尽可能的在链端插入
+     * 模式预处理
      *
      * @return
      */
     public ObservableTransformer<T, T> transformer() {
         return new ObservableTransformer<T, T>() {
-
 
             @Override
             public ObservableSource apply(@NonNull Observable upstream) {
@@ -46,6 +46,30 @@ public class T<T> {
                                 }
                                 if (noticeable.get() != null) {
                                     noticeable.get().setDisposable(GK.addAndGet(1), disposable);
+                                }
+                            }
+                        })
+                        .doOnError(new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                if (noticeable.get() != null) {
+                                    noticeable.get().dismissNotice();
+                                }
+                            }
+                        })
+                        .doOnComplete(new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                if (noticeable.get() != null) {
+                                    noticeable.get().dismissNotice();
+                                }
+                            }
+                        })
+                        .doOnDispose(new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                if (noticeable.get() != null) {
+                                    noticeable.get().dismissNotice();
                                 }
                             }
                         })

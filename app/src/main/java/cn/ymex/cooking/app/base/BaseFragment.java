@@ -57,7 +57,7 @@ public class BaseFragment extends Fragment implements Noticeable {
 
 
     /**
-     * fragment 是否对用户可见
+     * fragment 是否对用户可见,此处不可见时取消提示框
      */
 
     public void onHiddenChanged(boolean hidden) {

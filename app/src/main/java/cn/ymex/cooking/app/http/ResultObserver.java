@@ -1,36 +1,46 @@
 package cn.ymex.cooking.app.http;
 
-import java.lang.ref.WeakReference;
-
+import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 
-public class ResultObserver<T> extends ResponseObserver<T> {
+public class ResultObserver<T> implements Observer<T> {
+    @Override
+    public void onSubscribe(@NonNull Disposable d) {
 
-    private WeakReference<Noticeable> noticeable;
-
-    public ResultObserver() {
-        super();
     }
-
-    public ResultObserver(Noticeable notice) {
-        this();
-        this.noticeable = new WeakReference<Noticeable>(notice);
-    }
-
 
     @Override
+    public void onNext(@NonNull T t) {
+        this.onResult(t);
+    }
+
+    @Override
+    public void onError(@NonNull Throwable e) {
+        this.onFailure(e);
+        this.onFinish();
+    }
+
+    @Override
+    public void onComplete() {
+        this.onFinish();
+    }
+
+
     public void onResult(@NonNull T t) {
     }
 
-    @Override
+
     public void onFailure(@NonNull Throwable e) {
+
     }
 
-    @Override
+
+    /**
+     * 不管成功还是失败都会最后一步都会调用onfinish
+     */
     public void onFinish() {
-        if (noticeable.get() != null) {
-            noticeable.get().dismissNotice();
-        }
+
     }
 
 }

@@ -10,7 +10,7 @@ public class CategoryInfo {
 
     private CategoryInfoItem categoryInfo;
 
-    private List<CategoryInfoItem> childs;
+    private List<CategoryInfoItemWarp> childs;
 
     public CategoryInfoItem getCategoryInfo() {
         return categoryInfo;
@@ -20,11 +20,11 @@ public class CategoryInfo {
         this.categoryInfo = categoryInfo;
     }
 
-    public List<CategoryInfoItem> getChilds() {
+    public List<CategoryInfoItemWarp> getChilds() {
         return childs;
     }
 
-    public void setChilds(List<CategoryInfoItem> childs) {
+    public void setChilds(List<CategoryInfoItemWarp> childs) {
         this.childs = childs;
     }
 }

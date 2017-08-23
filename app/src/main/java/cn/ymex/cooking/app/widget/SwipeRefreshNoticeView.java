@@ -24,9 +24,7 @@ public class SwipeRefreshNoticeView implements NoticeViewable {
 
     @Override
     public void showNotice() {
-        refreshLayout.autoRefresh(0);
-        // TODO: 2017/8/22  
-        //refreshLayout.setRefresh(true);
+        refreshLayout.setRefresh(true);
     }
 
     @Override

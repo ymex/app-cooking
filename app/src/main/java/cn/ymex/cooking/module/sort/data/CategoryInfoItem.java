@@ -15,6 +15,15 @@ public class CategoryInfoItem {
     private String ctgId;
     private String name;
     private String parentId;
+    private String tag ;
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getTag() {
+        return tag;
+    }
 
     public String getCtgId() {
         return ctgId;
