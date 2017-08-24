@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 
 import cn.ymex.cooking.AppContext;
+import cn.ymex.cooking.app.http.LogInterceptor;
 import cn.ymex.cooking.config.Constant;
 import dagger.Module;
 import dagger.Provides;
@@ -38,6 +39,7 @@ public class AppModule {
     @Provides
     public OkHttpClient provideOkHttpClient() {
         return new OkHttpClient.Builder()
+                .addInterceptor(new LogInterceptor())
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .build();
     }

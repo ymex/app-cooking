@@ -7,4 +7,5 @@ package cn.ymex.cooking.config;
 public interface Constant {
     String APP_KEY = "51c39ddd603b";
     String APIURL = "http://apicloud.mob.com/v1/cook/";
+    int PAGE_SIZE = 24;
 }

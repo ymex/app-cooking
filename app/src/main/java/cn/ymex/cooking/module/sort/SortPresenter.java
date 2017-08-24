@@ -1,8 +1,11 @@
 package cn.ymex.cooking.module.sort;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 
 import cn.ymex.cooking.app.http.ResultObserver;
+import cn.ymex.cooking.module.query.QueryActivity;
 import cn.ymex.cooking.module.sort.data.ResultCategory;
 import cn.ymex.cooking.module.sort.data.souce.SortRepository;
 import io.reactivex.annotations.NonNull;
@@ -44,5 +47,10 @@ public class SortPresenter implements SortContract.Presenter {
                 view.fillAdapter(resultCategory.getResult());
             }
         });
+    }
+
+    @Override
+    public void toQueryAct(Context context, String cid) {
+        QueryActivity.startAction(context, cid);
     }
 }

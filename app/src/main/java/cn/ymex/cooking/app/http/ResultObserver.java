@@ -1,5 +1,7 @@
 package cn.ymex.cooking.app.http;
 
+import android.util.Log;
+
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -32,7 +34,6 @@ public class ResultObserver<T> implements Observer<T> {
 
 
     public void onFailure(@NonNull Throwable e) {
-
     }
 
 

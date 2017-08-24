@@ -1,6 +1,7 @@
 package cn.ymex.cooking.module.query;
 
 import cn.ymex.cooking.app.scoped.FragmentScoped;
+import cn.ymex.cooking.module.query.data.source.QueryRepository;
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,5 +18,11 @@ public class QueryModule {
     @Provides
     QueryContract.View provideQueryView() {
         return this.mView;
+    }
+
+    @FragmentScoped
+    @Provides
+    QueryRepository proideRepository() {
+        return new QueryRepository();
     }
 }

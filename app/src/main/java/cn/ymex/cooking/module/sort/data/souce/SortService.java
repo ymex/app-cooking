@@ -12,7 +12,5 @@ import retrofit2.http.Query;
 
 public interface SortService {
     @GET("category/query")
-    Call<ResultCategory> getCategory(@Query("key") String key);
-    @GET("category/query")
     Observable<ResultCategory> getRxCategory(@Query("key") String key);
 }

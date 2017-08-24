@@ -178,9 +178,9 @@ public class SortFragment extends BaseFragment implements SortContract.View {
 
         @Override
         public void onBindViewHolder(ViewHoder holder, int position) {
-            CategoryInfoItem item = items.get(position);
+            final CategoryInfoItem item = items.get(position);
             holder.tvTitle.setText(item.getName());
-            if ("item".equals(item.getTag())) {
+            if (!"item".equals(item.getTag())) {
                 holder.ivArray.setImageDrawable(new ColorDrawable());
                 holder.itemView.setOnClickListener(null);
             }else {
@@ -190,7 +190,7 @@ public class SortFragment extends BaseFragment implements SortContract.View {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        presenter.toQueryAct(getActivity() ,item.getCtgId());
                     }
                 });
             }
