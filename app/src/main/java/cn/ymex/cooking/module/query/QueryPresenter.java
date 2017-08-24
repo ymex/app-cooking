@@ -11,6 +11,8 @@ public class QueryPresenter implements QueryContract.Presenter {
 
     QueryContract.View view;
     QueryRepository repository;
+    private int mPage = 1;
+
 
     @Inject
     QueryPresenter(QueryContract.View view,QueryRepository repository) {
@@ -28,11 +30,17 @@ public class QueryPresenter implements QueryContract.Presenter {
     }
 
     @Override
-    public void requestQuery(String cid, int page) {
+    public void requestQuery(String cid, final int page) {
         repository.getCookingMenu(cid,page,this.view,new ResultObserver<ResultRecipe>(){
             @Override
             public void onResult(@NonNull ResultRecipe resultRecipe) {
                 super.onResult(resultRecipe);
+                if (page == 1) {
+                    mPage = 1;
+                }
+                if (resultRecipe.getResult().getCurPage()<resultRecipe.getResult().getTotal()) {
+                    QueryPresenter.this.mPage = resultRecipe.getResult().getCurPage()+1;
+                }
                 view.fillAdapter(resultRecipe);
             }
 
@@ -41,6 +49,17 @@ public class QueryPresenter implements QueryContract.Presenter {
                 super.onFailure(e);
                 System.out.println("----:::"+e.getLocalizedMessage());
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                view.finishLoadMore();
+            }
         });
+    }
+
+    @Override
+    public int getPage() {
+        return mPage;
     }
 }

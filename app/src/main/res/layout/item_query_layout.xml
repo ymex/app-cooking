@@ -11,8 +11,7 @@
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:src="@drawable/ic_home_black_24dp"/>
+        android:layout_height="86dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

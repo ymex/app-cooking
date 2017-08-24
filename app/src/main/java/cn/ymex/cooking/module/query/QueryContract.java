@@ -8,9 +8,11 @@ import io.reactivex.Observer;
 public class QueryContract {
     public interface Presenter extends BasePresenter {
         void requestQuery(String cid , int page);
+        int getPage();
     }
 
     public interface View extends BaseView<Presenter> {
         void fillAdapter(ResultRecipe resultRecipe);
+        void finishLoadMore();
     }
 }
