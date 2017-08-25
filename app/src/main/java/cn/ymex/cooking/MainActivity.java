@@ -18,8 +18,8 @@ import cn.ymex.cooking.module.sort.DaggerSortPresenterComponent;
 import cn.ymex.cooking.module.sort.SortFragment;
 import cn.ymex.cooking.module.sort.SortPresenter;
 import cn.ymex.cooking.module.sort.SortPresenterModule;
-import cn.ymex.cooking.utils.FragmentManagerWrap;
-import cn.ymex.cooking.utils.UtilsComponent;
+import cn.ymex.cooking.kits.FragmentManagerWrap;
+import cn.ymex.cooking.kits.UtilsComponent;
 
 public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFragmentListener,
         SortFragment.OnSortFragmentListener, PersonFragment.OnPersonFragmentListener,

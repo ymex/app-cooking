@@ -1,6 +1,8 @@
 package cn.ymex.cooking.module.query;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -8,7 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.ui.depot.wedgit.SwipeRefreshLayout;
+import android.ui.depot.wedgit.swiperefreshlayout.api.RefreshFooter;
 import android.ui.depot.wedgit.swiperefreshlayout.api.RefreshLayout;
+import android.ui.depot.wedgit.swiperefreshlayout.constant.SpinnerStyle;
+import android.ui.depot.wedgit.swiperefreshlayout.footer.BallPulseFooter;
 import android.ui.depot.wedgit.swiperefreshlayout.listener.OnLoadmoreListener;
 import android.ui.depot.wedgit.swiperefreshlayout.listener.OnRefreshListener;
 import android.view.LayoutInflater;
@@ -27,6 +32,7 @@ import cn.ymex.cooking.app.widget.SwipeRefreshNoticeView;
 import cn.ymex.cooking.module.query.data.RecipeIndex;
 import cn.ymex.cooking.module.query.data.ResultRecipe;
 import cn.ymex.kits.Finder;
+import cn.ymex.kits.widget.recycler.RecyclerViewHorizontalDivider;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -64,10 +70,12 @@ public class QueryFragment extends BaseFragment implements QueryContract.View {
 
         refreshLayout = (SwipeRefreshLayout) view;
         setNoticeView(new SwipeRefreshNoticeView(refreshLayout));
+        refreshLayout.setEnableFooterTranslationContent(false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter = new QueryAdapter(null));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+        recyclerView.addItemDecoration(RecyclerViewHorizontalDivider.def(getActivity()));
 
         cid = getArguments().getString("cid");
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {

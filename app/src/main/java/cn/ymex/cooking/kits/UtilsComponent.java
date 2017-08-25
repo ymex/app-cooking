@@ -1,8 +1,4 @@
-package cn.ymex.cooking.utils;
-
-import cn.ymex.cooking.MainActivity;
-import cn.ymex.cooking.app.scoped.ActivityScoped;
-import dagger.Component;
+package cn.ymex.cooking.kits;
 
 /**
  * Created by ymex on 2017/8/16.

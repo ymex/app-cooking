@@ -1,7 +1,6 @@
-package cn.ymex.cooking.utils;
+package cn.ymex.cooking.kits;
 
 import android.support.annotation.IdRes;
-import android.support.annotation.RestrictTo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
