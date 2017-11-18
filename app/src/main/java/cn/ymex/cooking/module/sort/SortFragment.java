@@ -9,9 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.ui.depot.wedgit.SwipeRefreshLayout;
-import android.ui.depot.wedgit.swiperefreshlayout.api.RefreshLayout;
-import android.ui.depot.wedgit.swiperefreshlayout.listener.OnRefreshListener;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +29,10 @@ import cn.ymex.cooking.module.sort.data.CategoryInfo;
 import cn.ymex.cooking.module.sort.data.CategoryInfoItem;
 import cn.ymex.cooking.module.sort.data.CategoryInfoItemWarp;
 import cn.ymex.kits.Finder;
-import cn.ymex.kits.widget.recycler.RecyclerViewHorizontalDivider;
-import cn.ymex.kits.widget.recycler.RecyclerViewVerticalDivider;
+import cn.ymex.widget.swipe.SwipeRefreshLayout;
+import cn.ymex.widget.swipe.api.RefreshLayout;
+import cn.ymex.widget.swipe.listener.OnRefreshListener;
+
 
 /**
  * A simple {@link Fragment} subclass.

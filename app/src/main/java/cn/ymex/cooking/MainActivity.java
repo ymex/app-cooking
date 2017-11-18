@@ -12,14 +12,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ymex.cooking.app.base.BaseActivity;
+import cn.ymex.cooking.kits.UtilsComponent;
 import cn.ymex.cooking.module.home.HomeFragment;
 import cn.ymex.cooking.module.person.PersonFragment;
 import cn.ymex.cooking.module.sort.DaggerSortPresenterComponent;
 import cn.ymex.cooking.module.sort.SortFragment;
 import cn.ymex.cooking.module.sort.SortPresenter;
 import cn.ymex.cooking.module.sort.SortPresenterModule;
-import cn.ymex.cooking.kits.FragmentManagerWrap;
-import cn.ymex.cooking.kits.UtilsComponent;
+import cn.ymex.kits.FragmentManagerWrap;
 
 public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFragmentListener,
         SortFragment.OnSortFragmentListener, PersonFragment.OnPersonFragmentListener,
@@ -52,15 +52,16 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFra
 //        utilsComponent.inject(this);
 
 
-
         navigation.setOnNavigationItemSelectedListener(this);
 
 
         if (!fragmentManagerWrap.attached()) {
-            fragmentManagerWrap.add(HomeFragment.newInstance(),
-                    SortFragment.newInstance(),
-                    PersonFragment.newInstance())
-                    .attach(R.id.contentFragment);
+            fragmentManagerWrap.setContainerViewId(R.id.contentFragment)
+                    .setLazyInit(false)
+                    .add(HomeFragment.newInstance(),
+                            SortFragment.newInstance(),
+                            PersonFragment.newInstance())
+                    .attach();
 
         } else {
             fragmentManagerWrap.restore();

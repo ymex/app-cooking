@@ -19,8 +19,8 @@ public class ImageLoaderModule extends AppGlideModule {
     public void applyOptions(Context context, GlideBuilder builder) {
         super.applyOptions(context, builder);
         RequestOptions requestOptions = new RequestOptions()
-                .error(R.drawable.blue_button_background)
-                .placeholder(R.drawable.blue_button_background)
+                //.error(R.drawable.blue_button_background)
+                //.placeholder(R.drawable.blue_button_background)
                 .centerCrop()
                 .dontAnimate();
         builder.setDefaultRequestOptions(requestOptions);

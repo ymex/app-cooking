@@ -3,13 +3,13 @@ package cn.ymex.cooking;
 import cn.ymex.cooking.app.AppComponent;
 import cn.ymex.cooking.app.AppModule;
 import cn.ymex.cooking.app.DaggerAppComponent;
-import cn.ymex.kits.AppContent;
+import cn.ymex.kits.ApplicationContent;
 
 /**
  * Created by ymexc on 2017/8/17.
  */
 
-public class AppContext extends AppContent {
+public class AppContext extends ApplicationContent {
 
     private static AppComponent appComponent;
 

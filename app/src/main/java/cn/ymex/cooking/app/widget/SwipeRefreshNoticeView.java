@@ -1,8 +1,9 @@
 package cn.ymex.cooking.app.widget;
 
-import android.ui.depot.wedgit.SwipeRefreshLayout;
+
 
 import cn.ymex.cooking.app.http.NoticeViewable;
+import cn.ymex.widget.swipe.SwipeRefreshLayout;
 
 /**
  * SwipeRefreshLayout作为加载提醒控件
