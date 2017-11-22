@@ -6,13 +6,14 @@
 
 基于MVP模式的app实现,包结构清溪明了。网络请求使用rxjava+retrofit2封装，相当灵活与可控。 
 
-app  //app网络 基类等
-cofig //配置
-kits //工具包
-module//app功能模块
+<br>
+app  //app网络 基类等<br>
+cofig //配置<br>
+kits //工具包<br>
+module//app功能模块<br>
+<br>
 
 
-
-包含app最基础的功能实现：
+包含app最基础的功能实现：<br>
 1、网络请求封装
 2、图片加载

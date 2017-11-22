@@ -3,6 +3,7 @@ package cn.ymex.cooking.kits;
 import android.support.v4.app.FragmentManager;
 
 import cn.ymex.cooking.app.scoped.ActivityScoped;
+import cn.ymex.kits.FragmentManagerWrap;
 import dagger.Module;
 import dagger.Provides;
 
