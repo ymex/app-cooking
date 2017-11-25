@@ -3,6 +3,7 @@ package cn.ymex.cooking.module.query;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -66,10 +67,10 @@ public class QueryFragment extends BaseFragment implements QueryContract.View {
         setNoticeView(new SwipeRefreshNoticeView(refreshLayout));
         refreshLayout.setEnableFooterTranslationContent(false);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
         recyclerView.setAdapter(adapter = new QueryAdapter(null));
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
 
         cid = getArguments().getString("cid");
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -162,11 +163,10 @@ public class QueryFragment extends BaseFragment implements QueryContract.View {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             RecipeIndex item = resultRecipe.getResult().getList().get(position);
-            System.out.println("----:::" + item.getName());
             holder.tvTitle.setText(item.getName());
             holder.tvTags.setText(item.getCtgTitles());
             String url = item.getThumbnail();
-            if (TextUtils.isEmpty(url)) {
+            if (item.getRecipe()!=null && TextUtils.isEmpty(url)) {
                 url = item.getRecipe().getImg();
             }
             ImageLoader.with(holder.itemView).load(url)
