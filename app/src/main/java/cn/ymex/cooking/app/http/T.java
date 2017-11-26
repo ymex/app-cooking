@@ -13,16 +13,31 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class T<T> {
+public final class T<E> {
     public static AtomicInteger GK = new AtomicInteger(0);
     private WeakReference<Noticeable> noticeable;
+    private boolean isShowNotice = true;
 
     public T() {
-        this(null);
+        this(null, false);
     }
 
     public T(Noticeable noticeable) {
+        this(noticeable, true);
+    }
+
+    public T(Noticeable noticeable, boolean isShowNotice) {
         this.noticeable = new WeakReference<Noticeable>(noticeable);
+        this.isShowNotice = isShowNotice;
+    }
+
+    public T showNotice(boolean showNotice) {
+        this.isShowNotice = showNotice;
+        return this;
+    }
+
+    private boolean able() {
+        return noticeable.get() != null && isShowNotice;
     }
 
     /**
@@ -30,8 +45,8 @@ public class T<T> {
      *
      * @return
      */
-    public ObservableTransformer<T, T> transformer() {
-        return new ObservableTransformer<T, T>() {
+    public ObservableTransformer<E, E> transformer() {
+        return new ObservableTransformer<E, E>() {
 
             @Override
             public ObservableSource apply(@NonNull Observable upstream) {
@@ -41,7 +56,7 @@ public class T<T> {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
-                                if (noticeable.get() != null && !noticeable.get().isShow() && noticeable.get().isVisibleToUser()) {
+                                if (able() && !noticeable.get().isShow() && noticeable.get().isVisibleToUser()) {
                                     noticeable.get().showNotice();
                                 }
                                 if (noticeable.get() != null) {
@@ -52,7 +67,7 @@ public class T<T> {
                         .doOnError(new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                if (noticeable.get() != null) {
+                                if (able()) {
                                     noticeable.get().dismissNotice();
                                 }
                             }
@@ -60,7 +75,7 @@ public class T<T> {
                         .doOnComplete(new Action() {
                             @Override
                             public void run() throws Exception {
-                                if (noticeable.get() != null) {
+                                if (able()) {
                                     noticeable.get().dismissNotice();
                                 }
                             }
@@ -68,7 +83,7 @@ public class T<T> {
                         .doOnDispose(new Action() {
                             @Override
                             public void run() throws Exception {
-                                if (noticeable.get() != null) {
+                                if (able()) {
                                     noticeable.get().dismissNotice();
                                 }
                             }
