@@ -45,7 +45,8 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFra
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        fragmentManagerWrap = FragmentManagerWrap.build(getSupportFragmentManager());
+
+
 //        utilsComponent = DaggerUtilsComponent.builder()
 //                .utilsMoudel(new UtilsMoudel(getSupportFragmentManager()))
 //                .build();
@@ -53,19 +54,13 @@ public class MainActivity extends BaseActivity implements HomeFragment.OnHomeFra
 
 
         navigation.setOnNavigationItemSelectedListener(this);
+        fragmentManagerWrap = FragmentManagerWrap.build(getSupportFragmentManager())
+                .setContainerViewId(R.id.contentFragment).setLazyInit(true);
 
+        fragmentManagerWrap.attach(HomeFragment.newInstance(),
+                SortFragment.newInstance(),
+                PersonFragment.newInstance());
 
-        if (!fragmentManagerWrap.attached()) {
-            fragmentManagerWrap.setContainerViewId(R.id.contentFragment)
-                    .setLazyInit(false)
-                    .add(HomeFragment.newInstance(),
-                            SortFragment.newInstance(),
-                            PersonFragment.newInstance())
-                    .attach();
-
-        } else {
-            fragmentManagerWrap.restore();
-        }
 
         DaggerSortPresenterComponent.builder()
                 .sortPresenterModule(new SortPresenterModule((SortFragment) fragmentManagerWrap.getFragment(1)))
