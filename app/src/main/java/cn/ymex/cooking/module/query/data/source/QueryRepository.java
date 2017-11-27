@@ -34,7 +34,7 @@ public class QueryRepository {
                 .getRetrofit()
                 .create(QueryService.class)
                 .getQueryRecipe(params)
-                .compose(new T<ResultRecipe>(noticeable).transformer())
+                .compose( T.create(noticeable).<ResultRecipe>transformer())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

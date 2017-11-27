@@ -13,22 +13,31 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public final class T<E> {
+public final class T {
     public static AtomicInteger GK = new AtomicInteger(0);
     private WeakReference<Noticeable> noticeable;
     private boolean isShowNotice = true;
 
-    public T() {
+
+    private T() {
         this(null, false);
     }
 
-    public T(Noticeable noticeable) {
+    private T(Noticeable noticeable) {
         this(noticeable, true);
     }
 
-    public T(Noticeable noticeable, boolean isShowNotice) {
+    private T(Noticeable noticeable, boolean isShowNotice) {
         this.noticeable = new WeakReference<Noticeable>(noticeable);
         this.isShowNotice = isShowNotice;
+    }
+
+    public static T create() {
+        return new T();
+    }
+
+    public static T create(Noticeable noticeable) {
+        return new T(noticeable);
     }
 
     public T showNotice(boolean showNotice) {
@@ -45,7 +54,7 @@ public final class T<E> {
      *
      * @return
      */
-    public ObservableTransformer<E, E> transformer() {
+    public <E> ObservableTransformer<E, E> transformer() {
         return new ObservableTransformer<E, E>() {
 
             @Override
