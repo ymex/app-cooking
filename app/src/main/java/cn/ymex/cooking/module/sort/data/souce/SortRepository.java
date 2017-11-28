@@ -25,7 +25,7 @@ public class SortRepository {
                 .getRetrofit()
                 .create(SortService.class)
                 .getRxCategory(Constant.APP_KEY)//app key
-                .compose(new T<ResultCategory>(noticeable).transformer())
+                .compose( T.create(noticeable).<ResultCategory>transformer())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

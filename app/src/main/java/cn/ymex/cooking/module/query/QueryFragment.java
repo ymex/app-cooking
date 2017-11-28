@@ -4,12 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import cn.ymex.widget.swipe.api.RefreshLayout;
-import cn.ymex.widget.swipe.listener.OnLoadmoreListener;
-import cn.ymex.widget.swipe.listener.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +22,10 @@ import cn.ymex.cooking.app.widget.SwipeRefreshNoticeView;
 import cn.ymex.cooking.module.query.data.RecipeIndex;
 import cn.ymex.cooking.module.query.data.ResultRecipe;
 import cn.ymex.kits.Finder;
-import cn.ymex.kits.widget.DividerItemDecoration;
 import cn.ymex.widget.swipe.SwipeRefreshLayout;
+import cn.ymex.widget.swipe.api.RefreshLayout;
+import cn.ymex.widget.swipe.listener.OnLoadmoreListener;
+import cn.ymex.widget.swipe.listener.OnRefreshListener;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -67,7 +65,7 @@ public class QueryFragment extends BaseFragment implements QueryContract.View {
         setNoticeView(new SwipeRefreshNoticeView(refreshLayout));
         refreshLayout.setEnableFooterTranslationContent(false);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setAdapter(adapter = new QueryAdapter(null));
 
         //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
@@ -163,11 +161,19 @@ public class QueryFragment extends BaseFragment implements QueryContract.View {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             RecipeIndex item = resultRecipe.getResult().getList().get(position);
+
+            if (item == null) {
+                return;
+            }
+
             holder.tvTitle.setText(item.getName());
-            holder.tvTags.setText(item.getCtgTitles());
+
             String url = item.getThumbnail();
-            if (item.getRecipe()!=null && TextUtils.isEmpty(url)) {
+            if (item.getRecipe() != null) {
                 url = item.getRecipe().getImg();
+                if (TextUtils.isEmpty(url)) {
+                    url = item.getThumbnail();
+                }
             }
             ImageLoader.with(holder.itemView).load(url)
                     .transition(ImageLoaderModule.drawableCrossFade())
@@ -185,8 +191,6 @@ public class QueryFragment extends BaseFragment implements QueryContract.View {
         TextView tvTitle;
         @BindView(R.id.iv_image)
         ImageView ivImage;
-        @BindView(R.id.tv_tags)
-        TextView tvTags;
 
         public ViewHolder(View itemView) {
             super(itemView);
